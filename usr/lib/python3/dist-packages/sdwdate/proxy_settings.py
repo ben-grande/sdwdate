@@ -9,7 +9,7 @@ sys.dont_write_bytecode = True
 import os
 import glob
 import re
-from subprocess import check_output
+import subprocess
 
 
 def proxy_settings():
@@ -19,10 +19,9 @@ def proxy_settings():
 
     if (os.path.exists('/usr/share/whonix') and
             os.access(settings_path, os.X_OK)):
-        proxy_settings = check_output(settings_path)
-        ip_address = re.search(
-            b'GATEWAY_IP="(.*)"',
-            proxy_settings).group(1).decode()
+        proc = subprocess.Popen(settings_path, stdout=subprocess.PIPE)
+        stdout, _ = proc.communicate()
+        ip_address = str(re.search('GATEWAY_IP="(.*)"', stdout).group(1))
 
     if os.path.exists('/usr/share/whonix'):
         port_number = '9108'

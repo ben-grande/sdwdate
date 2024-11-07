@@ -192,7 +192,7 @@ def read_pools(pool, mode):
             for conf in files:
                 conf_found = True
                 with open(conf) as c:
-                    for line in c:
+                    for line in c.readlines():
                         line = line.strip()
                         if line.startswith('SDWDATE_POOL_ZERO'):
                             SDWDATE_POOL_ZERO = True
